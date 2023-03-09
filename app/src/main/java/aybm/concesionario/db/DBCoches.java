@@ -26,11 +26,11 @@ public class DBCoches extends DBHelper {
         }
     }
 
-    public Cursor mostrarModelos(String marca){
+    public Cursor mostrarModelos(){
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
-            Cursor filas_modelos = db.rawQuery("SELECT DISTINCT modelo from tabla_coches where marca = '"+marca+"'", null);
+            Cursor filas_modelos = db.rawQuery("SELECT DISTINCT modelo from tabla_coches", null);
             if (filas_modelos.moveToFirst()) {
                 return filas_modelos;
             } else {
