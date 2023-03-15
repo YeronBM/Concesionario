@@ -9,16 +9,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import aybm.concesionario.db.DBCoches;
-import aybm.concesionario.entidades.Coche;
 
 public class MainActivity extends AppCompatActivity {
-    Spinner spinner_marcas, spinner_modelo, spinner_color;
+    private Spinner spinner_marcas, spinner_modelo, spinner_color;
 
     Button botonBuscar;
 
@@ -33,9 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         botonBuscar = findViewById(R.id.boton_Buscar);
 
-        //List<Coche> listaCoches = llenarSpinnerMarcas();
-        //ArrayAdapter<Coche> adapterMarcas = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, listaCoches);
-        List<String> listaMarcas = llenarSpinnerMarcas2();
+        List<String> listaMarcas = llenarSpinnerMarcas();
         ArrayAdapter<String> adapterMarcas = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, listaMarcas);
         spinner_marcas.setAdapter(adapterMarcas);
 
@@ -52,37 +48,29 @@ public class MainActivity extends AppCompatActivity {
         botonBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_ListView = new Intent(getApplicationContext(), ListaCoches.class);
-                startActivity(intent_ListView);
+                String valor_spinner_marcas = spinner_marcas.getSelectedItem().toString();
+                String valor_spinner_modelo = spinner_modelo.getSelectedItem().toString();
+                String valor_spinner_colores = spinner_color.getSelectedItem().toString();
+
+                Intent intent = new Intent(MainActivity.this, ListaCoches.class);
+                Bundle bundleDatos = new Bundle();
+                bundleDatos.putString("valor_spinner_marcas", valor_spinner_marcas);
+                bundleDatos.putString("valor_spinner_modelo", valor_spinner_modelo);
+                bundleDatos.putString("valor_spinner_colores", valor_spinner_colores);
+
+                intent.putExtras(bundleDatos);
+
+                startActivity(intent);
+
             }
         });
 
     }
 
-    //Prescincidble
-    private List<Coche> llenarSpinnerMarcas() {
-        List<Coche> listaCoches = new ArrayList<>();
-        DBCoches dbCoches = new DBCoches(MainActivity.this);
-        Cursor cursor = dbCoches.mostrarMarcas();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    Coche coche = new Coche();
-                    coche.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
-                    coche.setMarca(cursor.getString(cursor.getColumnIndexOrThrow("marca")));
-                    coche.setModelo(cursor.getString(cursor.getColumnIndexOrThrow("modelo")));
-                    coche.setColor(cursor.getString(cursor.getColumnIndexOrThrow("color")));
-                    coche.setDni_propietario(cursor.getString(cursor.getColumnIndexOrThrow("dni_propietario")));
-                    listaCoches.add(coche);
-                } while (cursor.moveToNext());
-            }
-        }
-        dbCoches.close();
-        return listaCoches;
-    }
 
-    private List<String> llenarSpinnerMarcas2() {
+    private List<String> llenarSpinnerMarcas() {
         List<String> listaMarcas = new ArrayList<>();
+        listaMarcas.add("Sin Marca");
         DBCoches dbCoches = new DBCoches(MainActivity.this);
         Cursor cursor = dbCoches.mostrarMarcas();
         if (cursor != null) {

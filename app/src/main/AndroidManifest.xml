@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Concesionario"
         tools:targetApi="31">
         <activity
+            android:name=".CocheDetallado"
+            android:exported="false" />
+        <activity
             android:name=".ListaCoches"
             android:exported="false" />
         <activity

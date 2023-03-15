@@ -26,7 +26,7 @@ public class DBCoches extends DBHelper {
         }
     }
 
-    public Cursor mostrarModelos(){
+    public Cursor mostrarModelos() {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -41,13 +41,29 @@ public class DBCoches extends DBHelper {
         }
     }
 
-    public Cursor mostrarColores(){
+    public Cursor mostrarColores() {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
             Cursor filas_colores = db.rawQuery("SELECT DISTINCT color from tabla_coches", null);
             if (filas_colores.moveToFirst()) {
                 return filas_colores;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cursor mostrarCoches_marca_modelo_color_especificos(String marca, String modelo, String color) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor filasConsulta = db.rawQuery("SELECT *  from tabla_coches where tabla_coches.marca='" + marca + "' " +
+                    "and tabla_coches.modelo='" + modelo + "' and tabla_coches.color='" + color + "'", null);
+            if (filasConsulta.moveToFirst()) {
+                return filasConsulta;
             } else {
                 return null;
             }
