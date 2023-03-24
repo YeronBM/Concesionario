@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".BuscarCoche">
 
     <TextView
         android:id="@+id/xml_textview_marcas"

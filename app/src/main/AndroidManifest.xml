@@ -12,19 +12,36 @@
         android:theme="@style/Theme.Concesionario"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AgregarCoche"
+            android:exported="false" />
+        <activity
             android:name=".CocheDetallado"
             android:exported="false" />
         <activity
             android:name=".ListaCoches"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".BuscarCoche">
+            <!--
+            android:exported="true"
+            -->
+
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
     </application>
 

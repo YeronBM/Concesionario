@@ -17,18 +17,32 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    /**
+     * Método que se ejecuta al iniciar por primera vez la aplicación.
+     */
     public void onCreate(SQLiteDatabase db) {
-        crearTablasiniciales(db);
-        crearInsertsinciales(db);
+        crearTablasIniciales(db);
+        crearInsertsInciales(db);
     }
 
+
+    /**
+     * Método que se ejecuta al cambiar el atributo DB_VERSION en la clase.
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLA_COCHES);
         onCreate(db);
     }
 
-    private void crearTablasiniciales(SQLiteDatabase db) {
+    /**
+     * Método que crea la estructura inicial de la base de datos.
+     * @param db
+     */
+    private void crearTablasIniciales(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLA_COCHES + "(" +
                 "id INTEGER primary key autoincrement NOT NULL," +
                 "marca text NOT NULL," +
@@ -37,7 +51,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "dni_propietario text not null)");
     }
 
-    private void crearInsertsinciales(SQLiteDatabase db) {
+    /**
+     * Método que puebla la base de datos con los datos iniciales.
+     * @param db
+     */
+    private void crearInsertsInciales(SQLiteDatabase db) {
         //https://www.motor.es/marcas/
         db.execSQL("INSERT INTO " + TABLA_COCHES + "(marca, modelo, color, dni_propietario) values('Alfa Romeo','Alfa Romeo Giulia', 'Rojo','39456703L')");
         db.execSQL("INSERT INTO " + TABLA_COCHES + "(marca, modelo, color, dni_propietario) values('Alfa Romeo','Alfa Romeo Stelvio', 'Azul','39456703L')");

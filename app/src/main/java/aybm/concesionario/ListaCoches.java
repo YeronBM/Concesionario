@@ -8,10 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,16 +16,14 @@ import java.util.List;
 
 import aybm.concesionario.db.DBCoches;
 import aybm.concesionario.entidades.Coche;
-import aybm.concesionario.entidades.CocheDetallado;
 
 public class ListaCoches extends AppCompatActivity {
 
-    ListView listaCoches;
+    private ListView listaCoches;
 
-    DBCoches dbCoches;
+    private DBCoches dbCoches;
 
-    ListAdapter adapter_lista;
-
+    ArrayList<Integer> lista_id = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +35,16 @@ public class ListaCoches extends AppCompatActivity {
         dbCoches = new DBCoches(ListaCoches.this);
         SQLiteDatabase db = dbCoches.getReadableDatabase();
 
-        tomarDatosIntent(listaCoches);
+        tomarDatosIntentyLlenarLv(listaCoches);
 
         listaCoches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(ListaCoches.this, CocheDetallado.class);
+                Bundle bundleDatos = new Bundle();
+                bundleDatos.putInt("valor_id_coche", lista_id.get(position));
+                intent.putExtras(bundleDatos);
                 startActivity(intent);
 
             }
@@ -54,12 +52,12 @@ public class ListaCoches extends AppCompatActivity {
 
     }
 
-    public void llenarListaCoches() {
 
-
-    }
-
-    public void tomarDatosIntent(ListView listview) {
+    /**
+     * Usando los valores pasados en el Bundle, ejecuta el método 'mostrarCoches_marca_modelo_color_especificos' de la clase DBCoche se puebla el Listview.
+     * @param listview
+     */
+    public void tomarDatosIntentyLlenarLv(ListView listview) {
         Bundle intent = getIntent().getExtras();
         String valorSpinner1 = intent.getString("valor_spinner_marcas");
         String valorSpinner2 = intent.getString("valor_spinner_modelo");
@@ -80,6 +78,7 @@ public class ListaCoches extends AppCompatActivity {
                 coche.setColor(cursor.getString(cursor.getColumnIndexOrThrow("color")));
                 coche.setDni_propietario(cursor.getString(cursor.getColumnIndexOrThrow("dni_propietario")));
                 listaCoches.add(coche);
+                lista_id.add(coche.getId());
             } while (cursor.moveToNext());
         } else {
             Toast.makeText(this, "No se han encontrado Coincidencias", Toast.LENGTH_SHORT).show();
